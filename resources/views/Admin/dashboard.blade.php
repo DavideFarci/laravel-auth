@@ -20,6 +20,6 @@
 
 @section('contents')
     
-    
+    benvenuto!
 
 @endsection
