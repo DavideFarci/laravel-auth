@@ -16,6 +16,11 @@
                         Projects
                     </a>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="{{ route('admin.project.create') }}" role="button" aria-expanded="false">
+                        New Project
+                    </a>
+                </li>
             </ul>
             {{-- <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
