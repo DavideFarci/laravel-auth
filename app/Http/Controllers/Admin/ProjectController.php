@@ -13,8 +13,8 @@ class ProjectController extends Controller
         'author'        => 'required|string|max:30',
         'creation_date' => 'required|date',
         'last_update'   => 'required|date',
-        'collaborators' => 'string|max:150',
-        'description'   => 'string',
+        'collaborators' => 'nullable|string|max:150',
+        'description'   => 'nullable|string',
         'languages'     => 'required|string|max:50',
         'link_github'   => 'required|string|max:150',
     ];
