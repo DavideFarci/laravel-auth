@@ -72,6 +72,6 @@
             </div>
         </div>
 
-        <button class="btn btn-primary">Crea</button>
+        <button class="btn btn-primary">Edit</button>
     </form>
 @endsection
