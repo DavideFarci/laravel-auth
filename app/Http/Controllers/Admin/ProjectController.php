@@ -101,7 +101,26 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        //
+        // validare i dati 
+        $request->validate($this->validations);
+
+        $data = $request->all();
+        // Salvare i dati nel database
+        $newProject = new Project();
+        $newProject->title = $data['title'];
+        $newProject->author = $data['author'];
+        $newProject->creation_date = $data['creation_date'];
+        $newProject->last_update = $data['last_update'];
+        $newProject->collaborators = $data['collaborators'];
+        $newProject->description = $data['description'];
+        $newProject->languages = $data['languages'];
+        $newProject->link_github = $data['link_github'];
+        $newProject->update();
+
+        // return 'commentare se serve debuggare';
+        // $newComic = Comic::create($data);
+
+        return redirect()->route('Admin.project.show', ['project' => $newProject]);
     }
 
     /**
