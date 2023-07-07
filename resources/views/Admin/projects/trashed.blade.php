@@ -12,9 +12,16 @@
                 class="d-inline-block"
             >
             @csrf
-            <button class="btn btn-warning">Cancel</button>
+            <button class="btn btn-warning">Calcel</button>
         </form>
     </div>
+    @endif
+
+    @if (session('restore_success'))
+        @php $project = session('restore_success') @endphp
+        <div class="alert alert-success">
+            The project "{{ $project->title }}" has been Restored
+        </div>
     @endif
 
     <table class="table table-striped">
@@ -31,7 +38,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($projects as $project)
+            @foreach ($trashedProjects as $project)
                 <tr>
                     <th scope="row">{{ $project->title }}</th>
                     <td>{{ $project->author }}</td>
@@ -40,22 +47,23 @@
                     <td>{{ $project->collaborators }}</td>
                     <td>{{ $project->description }}</td>
                     <td>{{ $project->languages }}</td>
-                    <td><a href="{{ $project->link_github }}">GitHub</a></td>
+                    <td>{{ $project->link_github }}</td>
                     <td>
                         <a class="btn btn-primary" href="{{ route('admin.project.show', ['project' => $project->id]) }}">View</a>
-                        <a class="btn btn-warning" href="{{ route('admin.project.edit', ['project' => $project->id]) }}">Edit</a>
-                        <form class="d-inline-block" method="POST" action="{{ route('admin.project.destroy', ['project' => $project->id]) }}">
+                        <form class="d-inline-block" method="POST" action="{{ route('admin.project.restore', ['project' => $project->id]) }}">
                             @csrf
-                            @method('delete')
-                            <button class="btn btn-danger">Delete</button>
+                            <button class="btn btn-warning">Restore</button>
                         </form>
+                        <button type="button" class="btn btn-danger js-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ $project->id }}">
+                            Delete
+                        </button>
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 
-    {{-- <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -68,11 +76,11 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
                     <form
-                        action="{{ route('admin.project.destroy', ['project' => $project]) }}"
+                        action=""
                         method="post"
                         class="d-inline-block"
                         id="confirm-delete"
-                        data-template="{{ route('admin.project.destroy', ['project' => '*****']) }}"
+                        data-template="{{ route('admin.project.harddelete', ['project' => '*****']) }}"
                     >
                         @csrf
                         @method('delete')
@@ -81,7 +89,5 @@
                 </div>
             </div>
         </div>
-    </div> --}}
-
-{{-- {{ $projects->links() }} --}}
+    </div>
 @endsection

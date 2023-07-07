@@ -135,4 +135,29 @@ class ProjectController extends Controller
 
         return to_route('admin.project.index')->with('delete_success', $project);
     }
+
+    public function restore($id)
+    {
+        Project::withTrashed()->where('id', $id)->restore();
+
+        $project = Project::find($id);
+
+        return to_route('admin.project.trashed')->with('restore_success', $project);
+    }
+
+    public function trashed()
+    {
+        // $projects = project::all(); // SELECT * FROM `projects`
+        $trashedProjects = Project::onlyTrashed();
+
+        return view('admin.projects.trashed', compact('trashedProjects'));
+    }
+
+    public function harddelete($id)
+    {
+        $project = Project::withTrashed()->find($id);
+        $project->forceDelete();
+
+        return to_route('admin.project.trashed')->with('delete_success', $project);
+    }
 }

@@ -21,6 +21,11 @@
                         New Project
                     </a>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="{{ route('admin.project.trashed') }}" role="button" aria-expanded="false">
+                        Bin
+                    </a>
+                </li>
             </ul>
 
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
