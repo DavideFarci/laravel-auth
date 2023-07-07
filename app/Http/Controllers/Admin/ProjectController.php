@@ -8,6 +8,17 @@ use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
+    private $validations = [
+        'title'         => 'required|string|min:4|max:50',
+        'author'        => 'required|string|max:30',
+        'creation_date' => 'required|date',
+        'last_update'   => 'required|date',
+        'collaborators' => 'string|max:150',
+        'description'   => 'string',
+        'languages'     => 'required|string|max:50',
+        'link_github'   => 'required|string|max:150',
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +37,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('Admin.projects.create');
     }
 
     /**
@@ -37,7 +48,26 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validare i dati 
+        $request->validate($this->validations);
+
+        $data = $request->all();
+        // Salvare i dati nel database
+        $newProject = new Project();
+        $newProject->title = $data['title'];
+        $newProject->author = $data['author'];
+        $newProject->creation_date = $data['creation_date'];
+        $newProject->last_update = $data['last_update'];
+        $newProject->collaborators = $data['collaborators'];
+        $newProject->description = $data['description'];
+        $newProject->languages = $data['languages'];
+        $newProject->link_github = $data['link_github'];
+        $newProject->save();
+
+        // return 'commentare se serve debuggare';
+        // $newComic = Comic::create($data);
+
+        return redirect()->route('Admin.project.show', ['project' => $newProject->id]);
     }
 
     /**
